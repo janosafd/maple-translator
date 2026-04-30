@@ -8,8 +8,16 @@ import urllib.parse
 import json
 import threading
 import re
+import sys
 
 APP_TITLE = "冒险岛翻译小工具"
+
+if sys.platform == 'darwin':
+    UI_FONT = ('PingFang SC', 13)
+elif sys.platform == 'win32':
+    UI_FONT = ('Microsoft YaHei', 11)
+else:
+    UI_FONT = ('TkDefaultFont', 11)
 
 
 def has_chinese(text):
@@ -86,7 +94,7 @@ class App:
         ttk.Button(toolbar, text="清空", command=self._clear, width=8).pack(side='right')
 
         ttk.Label(self.root, text="输入（中文 或 English）：").pack(anchor='w', padx=8)
-        self.input = tk.Text(self.root, height=6, wrap='word', font=('Microsoft YaHei', 11))
+        self.input = tk.Text(self.root, height=6, wrap='word', font=UI_FONT)
         self.input.pack(fill='both', expand=True, padx=8, pady=4)
         self.input.bind('<Control-Return>', lambda e: (self._do_translate(), 'break'))
         self.input.focus_set()
@@ -103,7 +111,7 @@ class App:
         self.status.pack(side='right')
 
         ttk.Label(self.root, text="结果：").pack(anchor='w', padx=8)
-        self.output = tk.Text(self.root, height=6, wrap='word', font=('Microsoft YaHei', 11))
+        self.output = tk.Text(self.root, height=6, wrap='word', font=UI_FONT)
         self.output.pack(fill='both', expand=True, padx=8, pady=(4, 8))
 
     def _toggle_topmost(self):
