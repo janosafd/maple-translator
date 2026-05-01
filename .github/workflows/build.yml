@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install pyinstaller==6.10.0
+      - run: pip install pyinstaller==6.10.0 certifi
       - run: pyinstaller --onefile --windowed --name "MapleTranslator" translator.py
       - uses: actions/upload-artifact@v4
         with:
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install pyinstaller==6.10.0
+      - run: pip install pyinstaller==6.10.0 certifi
       - name: Build .app
         run: pyinstaller --windowed --name "MapleTranslator" translator.py
       - name: Ad-hoc codesign (required to run on Apple Silicon)

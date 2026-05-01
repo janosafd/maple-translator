@@ -9,6 +9,13 @@ import json
 import threading
 import re
 import sys
+import ssl
+
+try:
+    import certifi
+    SSL_CONTEXT = ssl.create_default_context(cafile=certifi.where())
+except Exception:
+    SSL_CONTEXT = ssl._create_unverified_context()
 
 APP_TITLE = "冒险岛翻译小工具"
 
@@ -35,7 +42,7 @@ def translate_google(text, source, target):
     }
     full_url = f"{url}?{urllib.parse.urlencode(params)}"
     req = urllib.request.Request(full_url, headers={'User-Agent': 'Mozilla/5.0'})
-    with urllib.request.urlopen(req, timeout=8) as r:
+    with urllib.request.urlopen(req, timeout=8, context=SSL_CONTEXT) as r:
         data = json.loads(r.read().decode('utf-8'))
     return ''.join(seg[0] for seg in data[0] if seg[0])
 
@@ -48,7 +55,7 @@ def translate_mymemory(text, source, target):
     params = {'q': text, 'langpair': f"{sl}|{tl}"}
     full_url = f"{url}?{urllib.parse.urlencode(params)}"
     req = urllib.request.Request(full_url, headers={'User-Agent': 'Mozilla/5.0'})
-    with urllib.request.urlopen(req, timeout=8) as r:
+    with urllib.request.urlopen(req, timeout=8, context=SSL_CONTEXT) as r:
         data = json.loads(r.read().decode('utf-8'))
     return data['responseData']['translatedText']
 
