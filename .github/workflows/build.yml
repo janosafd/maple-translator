@@ -33,8 +33,8 @@ jobs:
       - run: pip install pyinstaller==6.10.0
       - name: Build .app
         run: pyinstaller --windowed --name "MapleTranslator" translator.py
-      - name: Strip code signature (allow xattr removal later)
-        run: codesign --remove-signature dist/MapleTranslator.app || true
+      - name: Ad-hoc codesign (required to run on Apple Silicon)
+        run: codesign --force --deep --sign - dist/MapleTranslator.app
       - name: Zip .app
         run: cd dist && zip -r MapleTranslator-Mac.zip MapleTranslator.app
       - uses: actions/upload-artifact@v4
